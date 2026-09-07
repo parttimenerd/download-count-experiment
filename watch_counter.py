@@ -2,12 +2,16 @@
 watch_counter.py — download a release, then poll until the download_count
 increments, log elapsed time, and play an audible ping.
 
+For --tag ending in -1: one download, then poll.
+For --tag ending in -2: two downloads spaced 60s apart, then poll.
+  This tests whether GitHub deduplicates same-IP downloads within a time window.
+
 Usage:
-    python3 watch_counter.py            # uses full-1 release by default
+    python3 watch_counter.py                        # full-1: single download
+    python3 watch_counter.py --tag v-full-2         # full-2: two downloads 60s apart
     python3 watch_counter.py --tag v-full-1 --poll 15
 
-Runs indefinitely until the counter increments (or Ctrl-C).
-Designed to be run in the background: python3 watch_counter.py &
+Designed to be run in the background: python3 watch_counter.py --tag v-full-2 &
 """
 
 import subprocess
@@ -71,15 +75,26 @@ def main(repo, tag, poll, timeout_hours):
         raise SystemExit(1)
 
     log(f"Starting watch: repo={owner}/{repo} tag={tag} current_count={before}")
-    log(f"Downloading {url} ...")
 
+    is_run2 = tag.endswith("-2")
+
+    log(f"Downloading {url} ...")
     t_download_start = time.monotonic()
     bytes_recv = full_download(url)
     t_downloaded = time.monotonic()
-    elapsed_download = t_downloaded - t_download_start
+    log(f"Download 1 complete: {bytes_recv:,} bytes in {t_downloaded - t_download_start:.1f}s")
 
-    log(f"Download complete: {bytes_recv:,} bytes in {elapsed_download:.1f}s")
-    log(f"Polling every {poll}s until counter increments (timeout: {timeout_hours}h)...")
+    if is_run2:
+        log("Run-2 mode: waiting 60s before second download...")
+        time.sleep(60)
+        log(f"Downloading {url} (second time)...")
+        t2_start = time.monotonic()
+        bytes_recv2 = full_download(url)
+        t_downloaded = time.monotonic()
+        log(f"Download 2 complete: {bytes_recv2:,} bytes in {t_downloaded - t2_start:.1f}s")
+        log("Both downloads done. Now polling...")
+    else:
+        log(f"Polling every {poll}s until counter increments (timeout: {timeout_hours}h)...")
 
     deadline = time.monotonic() + timeout_hours * 3600
     polls = 0
@@ -93,7 +108,8 @@ def main(repo, tag, poll, timeout_hours):
 
         if after is not None and after > before:
             delta_t = time.monotonic() - t_downloaded
-            log(f"[COUNTER UPDATED] {before} → {after} — {delta_t:.0f}s after download completed")
+            extra = " (both downloads counted)" if is_run2 and after - before > 1 else ""
+            log(f"[COUNTER UPDATED] {before} → {after}{extra} — {delta_t:.0f}s after last download")
             ping()
             ping()
             return
