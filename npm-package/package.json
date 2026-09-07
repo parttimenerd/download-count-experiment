@@ -1,0 +1,10 @@
+{
+  "name": "download-count-experiment",
+  "version": "1.0.0",
+  "description": "Test package for investigating npm download count mechanics.",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Johannes Bechberger <me@mostlynerdless.de>",
+  "license": "MIT",
+  "files": ["index.js", "data.bin"]
+}
