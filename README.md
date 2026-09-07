@@ -65,6 +65,8 @@ Full results from one probe run (all 13 modes against a 1 MB asset):
 
 **`full-repeat` counted only once** — same IP, same release, two downloads within the update window = 1 increment, not 2.
 
+**Same-IP deduplication is per batch window, not per release.** When the WordPress demo site was loaded multiple times from the same IP, only one increment was recorded per ~10 minute window regardless of how many page loads fired the snippet. This means naive inflation scripts running from a single IP are rate-limited to roughly 6 increments per hour. To inflate reliably you need either multiple IPs or to wait between batch windows — which is exactly what a botnet or distributed CI abuse would provide.
+
 **Counter update delay:** ~10 minutes. First observation: 625s. Probe run: 551–619s across all 13 modes. GitHub batches counter updates on a fixed schedule rather than incrementing in real time.
 
 ## Reproducing — one-liners
