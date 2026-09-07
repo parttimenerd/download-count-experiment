@@ -1,6 +1,9 @@
 REPO_NAME = "download-count-experiment"
 ASSET_1MB = "release-1mb.bin"
 
+# Tag used by timing.py — a dedicated release that gets re-downloaded many times
+TIMING_TAG = "v-timing"
+
 # All probe modes, ordered cheapest to most expensive
 MODES = [
     "redirect-only",       # GET github.com URL, don't follow 302

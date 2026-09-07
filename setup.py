@@ -5,7 +5,7 @@ import tempfile
 import click
 from rich.console import Console
 
-from config import ASSET_1MB, MODES, REPO_NAME
+from config import ASSET_1MB, MODES, REPO_NAME, TIMING_TAG
 from gh_client import get_asset_info, get_owner
 
 console = Console()
@@ -74,6 +74,19 @@ def main(repo_name, dry_run):
                     check=True,
                     capture_output=True,
                 )
+
+        console.print(f"  Creating {TIMING_TAG}: timing...")
+        subprocess.run(
+            [
+                "gh", "release", "create", TIMING_TAG,
+                "--repo", f"{owner}/{repo_name}",
+                "--title", "timing",
+                "--notes", "Used by timing.py — re-downloaded many times to measure counter update delay.",
+                asset_path,
+            ],
+            check=True,
+            capture_output=True,
+        )
 
     console.print("\n[green]Done.[/green]")
     console.print(f"Releases: https://github.com/{owner}/{repo_name}/releases")
