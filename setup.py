@@ -1,7 +1,5 @@
-import io
 import os
 import subprocess
-import tarfile
 import tempfile
 
 import click
@@ -13,13 +11,9 @@ from gh_client import get_asset_info, get_owner
 console = Console()
 
 
-def make_tarball(path, size_bytes):
-    """Create a .tar.gz at `path` containing one file padded to size_bytes."""
-    padding = b"\x00" * size_bytes
-    with tarfile.open(path, "w:gz") as tar:
-        info = tarfile.TarInfo(name="data.bin")
-        info.size = size_bytes
-        tar.addfile(info, io.BytesIO(padding))
+def make_random_file(path, size_bytes):
+    with open(path, "wb") as f:
+        f.write(os.urandom(size_bytes))
 
 
 @click.command()
@@ -35,8 +29,8 @@ def main(repo_name, dry_run):
         path_10mb = os.path.join(tmpdir, ASSET_10MB)
 
         console.print("Generating assets...")
-        make_tarball(path_1mb, 1 * 1024 * 1024)
-        make_tarball(path_10mb, 10 * 1024 * 1024)
+        make_random_file(path_1mb, 1 * 1024 * 1024)
+        make_random_file(path_10mb, 10 * 1024 * 1024)
         console.print(f"  {ASSET_1MB}: {os.path.getsize(path_1mb):,} bytes")
         console.print(f"  {ASSET_10MB}: {os.path.getsize(path_10mb):,} bytes")
 
@@ -45,10 +39,15 @@ def main(repo_name, dry_run):
             return
 
         console.print(f"Creating repo {owner}/{repo_name}...")
-        subprocess.run(
+        result = subprocess.run(
             ["gh", "repo", "create", repo_name, "--public", "--add-readme"],
-            check=True,
+            capture_output=True, text=True,
         )
+        if result.returncode != 0:
+            if "already exists" in result.stderr:
+                console.print(f"[yellow]Repo already exists, skipping creation.[/yellow]")
+            else:
+                raise RuntimeError(f"gh repo create failed: {result.stderr.strip()}")
 
         for tag, title, asset_path in [
             ("v1.0", "1MB Release", path_1mb),
