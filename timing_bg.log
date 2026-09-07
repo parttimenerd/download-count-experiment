@@ -1,49 +1,0 @@
-Timing run: 20 samples starting at download #1
-Tag: v-timing | Poll: 15s | Timeout: 60m
-
-Sample 1/20 (download #1)
-  Count before: 0
-  Downloaded 1,048,576 bytes in 0.6s at 08:22:36
-  Poll #1 (+16s): count=0  Poll #2 (+31s): count=0  Poll #3 (+47s): count=0  Poll #4 (+62s): count=0  Poll #5 (+78s): count=0  Poll #6 (+93s): count=0  Poll #7 (+109s): count=0  Poll #8 (+125s): count=0  Poll #9 (+141s): count=0  Poll #10 (+156s): count=0  Poll #11 (+172s): count=0  Poll #12 (+187s): count=0  Poll #13 (+204s): count=0  Poll #14 (+220s): count=0  Poll #15 (+235s): count=0  Poll #16 (+251s): count=0  Poll #17 (+267s): count=0  Poll #18 (+282s): count=0  Poll #19 (+298s): count=0  Poll #20 (+314s): count=0  Poll #21 (+329s): count=0  Poll #22 (+345s): count=0  Poll #23 (+360s): count=0  Poll #24 (+376s): count=0  Poll #25 (+391s): count=0  Poll #26 (+407s): count=0  Poll #27 (+422s): count=0  Poll #28 (+438s): count=0  Poll #29 (+453s): count=0  Poll #30 (+469s): count=0  Poll #31 (+485s): count=0  Poll #32 (+500s): count=0  Poll #33 (+516s): count=0  Poll #34 (+531s): count=0  Poll #35 (+547s): count=0  Poll #36 (+563s): count=0  Poll #37 (+578s): count=0  Poll #38 (+594s): count=0  Poll #39 (+609s): count=0  Poll #40 (+625s): count=1  Poll #40 (+625s): count=1 ✓
-  Delay: 625.0s
-
-Sample 2/20 (download #2)
-  Count before: 1
-  Downloaded 1,048,576 bytes in 1.0s at 08:33:03
-  Poll #1 (+15s): count=1  Poll #2 (+31s): count=1  Poll #3 (+47s): count=1  Poll #4 (+62s): count=1  Poll #5 (+78s): count=1  Poll #6 (+93s): count=1  Poll #7 (+109s): count=1  Poll #8 (+125s): count=1  Poll #9 (+140s): count=1  Poll #10 (+156s): count=1  Poll #11 (+171s): count=1  Poll #12 (+187s): count=1  Poll #13 (+202s): count=1  Poll #14 (+218s): count=1  Poll #15 (+234s): count=1  Poll #16 (+249s): count=1  Poll #17 (+265s): count=1  Poll #18 (+280s): count=1  Poll #19 (+296s): count=1  Poll #20 (+311s): count=1  Poll #21 (+327s): count=1  Poll #22 (+342s): count=1  Poll #23 (+358s): count=1  Poll #24 (+373s): count=1  Poll #25 (+389s): count=1  Poll #26 (+404s): count=1  Poll #27 (+420s): count=1  Poll #28 (+436s): count=1  Poll #29 (+451s): count=1  Poll #30 (+467s): count=1  Poll #31 (+483s): count=1  Poll #32 (+498s): count=1  Poll #33 (+514s): count=1  Poll #34 (+529s): count=1  Poll #35 (+545s): count=1  Poll #36 (+560s): count=1  Poll #37 (+576s): count=1  Poll #38 (+592s): count=1  Poll #39 (+607s): count=1  Poll #40 (+623s): count=2  Poll #40 (+623s): count=2 ✓
-  Delay: 622.6s
-
-Sample 3/20 (download #3)
-  Count before: 2
-  Downloaded 1,048,576 bytes in 0.6s at 08:43:27
-  Poll #1 (+16s): count=2  Poll #2 (+31s): count=2  Poll #3 (+47s): count=2  Poll #4 (+62s): count=2  Poll #5 (+78s): count=2  Poll #6 (+93s): count=2  Poll #7 (+109s): count=2  Poll #8 (+124s): count=2  Poll #9 (+140s): count=2  Poll #10 (+155s): count=2  Poll #11 (+171s): count=2  Poll #12 (+186s): count=2  Poll #13 (+202s): count=2  Poll #14 (+218s): count=2  Poll #15 (+233s): count=2  Poll #16 (+249s): count=2  Poll #17 (+264s): count=2  Poll #18 (+280s): count=2  Poll #19 (+296s): count=2  Poll #20 (+311s): count=2  Poll #21 (+327s): count=2  Poll #22 (+342s): count=2  Poll #23 (+358s): count=2  Poll #24 (+373s): count=2  Poll #25 (+389s): count=2  Poll #26 (+404s): count=2  Poll #27 (+420s): count=2  Poll #28 (+435s): count=2  Poll #29 (+451s): count=2  Poll #30 (+466s): count=2  Poll #31 (+482s): count=2  Poll #32 (+497s): count=2  Poll #33 (+513s): count=2  Poll #34 (+528s): count=2  Poll #35 (+544s): count=2  Poll #36 (+560s): count=2  Poll #37 (+575s): count=2  Poll #38 (+591s): count=2  Poll #39 (+606s): count=2  Poll #40 (+622s): count=3  Poll #40 (+622s): count=3 ✓
-  Delay: 621.8s
-
-Sample 4/20 (download #4)
-  Count before: 3
-  Downloaded 1,048,576 bytes in 0.6s at 08:53:50
-  Poll #1 (+16s): count=3  Poll #2 (+31s): count=3  Poll #3 (+47s): count=3  Poll #4 (+62s): count=3  Poll #5 (+78s): count=3  Poll #6 (+93s): count=3  Poll #7 (+109s): count=3  Poll #8 (+124s): count=3  Poll #9 (+140s): count=3  Poll #10 (+155s): count=3  Poll #11 (+171s): count=3  Poll #12 (+186s): count=3  Poll #13 (+202s): count=3  Poll #14 (+218s): count=3  Poll #15 (+233s): count=3  Poll #16 (+249s): count=3  Poll #17 (+264s): count=3  Poll #18 (+280s): count=3  Poll #19 (+295s): count=3  Poll #20 (+311s): count=3  Poll #21 (+326s): count=3  Poll #22 (+342s): count=3  Poll #23 (+357s): count=3  Poll #24 (+373s): count=3  Poll #25 (+389s): count=3  Poll #26 (+404s): count=3  Poll #27 (+419s): count=3  Poll #28 (+435s): count=3  Poll #29 (+451s): count=3  Poll #30 (+466s): count=3  Poll #31 (+482s): count=3  Poll #32 (+497s): count=3  Poll #33 (+513s): count=3  Poll #34 (+528s): count=3  Poll #35 (+544s): count=3  Poll #36 (+559s): count=3  Poll #37 (+575s): count=3  Poll #38 (+591s): count=3  Poll #39 (+606s): count=3  Poll #40 (+622s): count=4  Poll #40 (+622s): count=4 ✓
-  Delay: 621.6s
-
-Sample 5/20 (download #5)
-  Count before: 4
-  Downloaded 1,048,576 bytes in 0.7s at 09:04:12
-  Poll #1 (+15s): count=4  Poll #2 (+31s): count=4  Poll #3 (+47s): count=4  Poll #4 (+62s): count=4  Poll #5 (+79s): count=4  Poll #6 (+94s): count=4  Poll #7 (+110s): count=4  Poll #8 (+126s): count=4  Poll #9 (+141s): count=4  Poll #10 (+157s): count=4  Poll #11 (+172s): count=4  Poll #12 (+188s): count=4  Poll #13 (+204s): count=4  Poll #14 (+219s): count=4  Poll #15 (+235s): count=4  Poll #16 (+251s): count=4  Poll #17 (+266s): count=4  Poll #18 (+282s): count=4  Poll #19 (+297s): count=4  Poll #20 (+313s): count=4  Poll #21 (+328s): count=4  Poll #22 (+344s): count=4  Poll #23 (+359s): count=4  Poll #24 (+375s): count=4  Poll #25 (+390s): count=4  Poll #26 (+406s): count=4  Poll #27 (+422s): count=4  Poll #28 (+437s): count=4  Poll #29 (+453s): count=4  Poll #30 (+469s): count=4  Poll #31 (+484s): count=4  Poll #32 (+500s): count=4  Poll #33 (+515s): count=4  Poll #34 (+531s): count=4  Poll #35 (+546s): count=4  Poll #36 (+562s): count=4  Poll #37 (+577s): count=4  Poll #38 (+593s): count=4  Poll #39 (+608s): count=4  Poll #40 (+624s): count=5  Poll #40 (+624s): count=5 ✓
-  Delay: 624.1s
-
-Sample 6/20 (download #6)
-  Count before: 5
-  Downloaded 1,048,576 bytes in 0.7s at 09:14:38
-  Poll #1 (+16s): count=5  Poll #2 (+31s): count=5  Poll #3 (+47s): count=5  Poll #4 (+62s): count=5  Poll #5 (+78s): count=5  Poll #6 (+93s): count=5  Poll #7 (+109s): count=5  Poll #8 (+124s): count=5  Poll #9 (+140s): count=5  Poll #10 (+155s): count=5  Poll #11 (+171s): count=5  Poll #12 (+186s): count=5  Poll #13 (+202s): count=5  Poll #14 (+218s): count=5  Poll #15 (+233s): count=5  Poll #16 (+249s): count=5  Poll #17 (+265s): count=5  Poll #18 (+280s): count=5  Poll #19 (+296s): count=5  Poll #20 (+311s): count=5  Poll #21 (+327s): count=5  Poll #22 (+343s): count=5  Poll #23 (+359s): count=5  Poll #24 (+374s): count=5  Poll #25 (+390s): count=5  Poll #26 (+406s): count=5  Poll #27 (+421s): count=5  Poll #28 (+437s): count=5  Poll #29 (+452s): count=5  Poll #30 (+468s): count=5  Poll #31 (+483s): count=5  Poll #32 (+499s): count=5  Poll #33 (+515s): count=5  Poll #34 (+530s): count=5  Poll #35 (+546s): count=5  Poll #36 (+561s): count=5  Poll #37 (+577s): count=5  Poll #38 (+592s): count=5  Poll #39 (+608s): count=5  Poll #40 (+623s): count=6  Poll #40 (+623s): count=6 ✓
-  Delay: 623.3s
-
-Sample 7/20 (download #7)
-  Count before: 6
-  Downloaded 1,048,576 bytes in 0.8s at 09:25:02
-  Poll #1 (+16s): count=6  Poll #2 (+31s): count=6  Poll #3 (+47s): count=6  Poll #4 (+63s): count=6  Poll #5 (+78s): count=6  Poll #6 (+94s): count=6  Poll #7 (+109s): count=6  Poll #8 (+125s): count=6  Poll #9 (+140s): count=6  Poll #10 (+156s): count=6  Poll #11 (+172s): count=6  Poll #12 (+187s): count=6  Poll #13 (+203s): count=6  Poll #14 (+218s): count=6  Poll #15 (+234s): count=6  Poll #16 (+249s): count=6  Poll #17 (+265s): count=6  Poll #18 (+280s): count=6  Poll #19 (+296s): count=6  Poll #20 (+312s): count=6  Poll #21 (+327s): count=6  Poll #22 (+343s): count=6  Poll #23 (+358s): count=6  Poll #24 (+374s): count=6  Poll #25 (+389s): count=6  Poll #26 (+405s): count=6  Poll #27 (+420s): count=6  Poll #28 (+436s): count=6  Poll #29 (+451s): count=6  Poll #30 (+467s): count=6  Poll #31 (+482s): count=6  Poll #32 (+498s): count=6  Poll #33 (+514s): count=6  Poll #34 (+529s): count=6  Poll #35 (+545s): count=6  Poll #36 (+560s): count=6  Poll #37 (+576s): count=6  Poll #38 (+591s): count=6  Poll #39 (+607s): count=6  Poll #40 (+623s): count=7  Poll #40 (+623s): count=7 ✓
-  Delay: 622.6s
-
-Sample 8/20 (download #8)
-  Count before: 7
-  Downloaded 1,048,576 bytes in 0.8s at 09:35:26
-  Poll #1 (+16s): count=7  Poll #2 (+31s): count=7  Poll #3 (+47s): count=7  Poll #4 (+62s): count=7  Poll #5 (+78s): count=7  Poll #6 (+93s): count=7  Poll #7 (+109s): count=7  Poll #8 (+125s): count=7  Poll #9 (+140s): count=7  Poll #10 (+156s): count=7  Poll #11 (+171s): count=7  Poll #12 (+187s): count=7  Poll #13 (+202s): count=7  Poll #14 (+218s): count=7  Poll #15 (+233s): count=7  Poll #16 (+249s): count=7  Poll #17 (+264s): count=7  Poll #18 (+280s): count=7  Poll #19 (+296s): count=7  Poll #20 (+311s): count=7  Poll #21 (+327s): count=7  Poll #22 (+342s): count=7  Poll #23 (+358s): count=7  Poll #24 (+373s): count=7  Poll #25 (+389s): count=7  Poll #26 (+404s): count=7

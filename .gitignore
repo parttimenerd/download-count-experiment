@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+venv/
+*.log
+timing_results.csv
+timing_histogram.png
+.claude/
