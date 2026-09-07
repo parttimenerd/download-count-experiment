@@ -5,15 +5,25 @@ import tempfile
 import click
 from rich.console import Console
 
-from config import ASSET_1MB, ASSET_10MB, REPO_NAME
+from config import ASSET_1MB, MODES, REPO_NAME
 from gh_client import get_asset_info, get_owner
 
 console = Console()
+
+SIZE_1MB = 1 * 1024 * 1024
 
 
 def make_random_file(path, size_bytes):
     with open(path, "wb") as f:
         f.write(os.urandom(size_bytes))
+
+
+def release_tag(mode, run):
+    return f"v-{mode}-{run}"
+
+
+def release_title(mode, run):
+    return f"{mode} (run {run})"
 
 
 @click.command()
@@ -23,20 +33,19 @@ def main(repo_name, dry_run):
     owner = get_owner()
     console.print(f"[bold]Owner:[/bold] {owner}")
     console.print(f"[bold]Repo:[/bold] {repo_name}")
+    console.print(f"[bold]Releases to create:[/bold] {len(MODES) * 2} ({len(MODES)} modes × 2 runs)")
+
+    if dry_run:
+        for mode in MODES:
+            for run in (1, 2):
+                console.print(f"  [dim]{release_tag(mode, run)}[/dim] — {release_title(mode, run)}")
+        console.print("[yellow]Dry run — stopping here.[/yellow]")
+        return
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        path_1mb = os.path.join(tmpdir, ASSET_1MB)
-        path_10mb = os.path.join(tmpdir, ASSET_10MB)
-
-        console.print("Generating assets...")
-        make_random_file(path_1mb, 1 * 1024 * 1024)
-        make_random_file(path_10mb, 10 * 1024 * 1024)
-        console.print(f"  {ASSET_1MB}: {os.path.getsize(path_1mb):,} bytes")
-        console.print(f"  {ASSET_10MB}: {os.path.getsize(path_10mb):,} bytes")
-
-        if dry_run:
-            console.print("[yellow]Dry run — stopping here.[/yellow]")
-            return
+        asset_path = os.path.join(tmpdir, ASSET_1MB)
+        console.print(f"Generating {ASSET_1MB} ({SIZE_1MB:,} bytes of random data)...")
+        make_random_file(asset_path, SIZE_1MB)
 
         console.print(f"Creating repo {owner}/{repo_name}...")
         result = subprocess.run(
@@ -45,29 +54,29 @@ def main(repo_name, dry_run):
         )
         if result.returncode != 0:
             if "already exists" in result.stderr:
-                console.print(f"[yellow]Repo already exists, skipping creation.[/yellow]")
+                console.print("[yellow]Repo already exists, skipping creation.[/yellow]")
             else:
                 raise RuntimeError(f"gh repo create failed: {result.stderr.strip()}")
 
-        for tag, title, asset_path in [
-            ("v1.0", "1MB Release", path_1mb),
-            ("v2.0", "10MB Release", path_10mb),
-        ]:
-            console.print(f"Creating release {tag}: {title}...")
-            subprocess.run(
-                [
-                    "gh", "release", "create", tag,
-                    "--repo", f"{owner}/{repo_name}",
-                    "--title", title,
-                    "--notes", "",
-                    asset_path,
-                ],
-                check=True,
-            )
+        for mode in MODES:
+            for run in (1, 2):
+                tag = release_tag(mode, run)
+                title = release_title(mode, run)
+                console.print(f"  Creating {tag}: {title}...")
+                subprocess.run(
+                    [
+                        "gh", "release", "create", tag,
+                        "--repo", f"{owner}/{repo_name}",
+                        "--title", title,
+                        "--notes", "",
+                        asset_path,
+                    ],
+                    check=True,
+                    capture_output=True,
+                )
 
-    console.print("\n[green]Done.[/green] Asset URLs:")
-    for asset in get_asset_info(owner, repo_name):
-        console.print(f"  {asset['tag']} / {asset['asset_name']}: {asset['browser_download_url']}")
+    console.print("\n[green]Done.[/green]")
+    console.print(f"Releases: https://github.com/{owner}/{repo_name}/releases")
 
 
 if __name__ == "__main__":
