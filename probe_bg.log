@@ -1,0 +1,117 @@
+
+Phase 1: downloading all 13 modes (run 1)
+   downloading... 0 B — HTTP 302 (0.4s)
+   downloading... 0 B — HTTP 302 (0.3s)
+   downloading... 0 B — HTTP 302 (0.3s)
+   downloading... 0 B — stream opened, 0 bytes read (0.5s)
+   downloading... 1,024 B — HTTP 206 (0.5s)
+   downloading... 10,240 B — HTTP 206 (0.5s)
+   downloading... 10,485 B — HTTP 206 (0.5s)
+   downloading... 104,857 B — HTTP 206 (0.6s)
+   downloading... 524,288 B — HTTP 206 (0.7s)
+   downloading... 1,038,090 B — HTTP 206 (0.6s)
+   downloading... 1,048,576 B — 1,048,576 bytes (0.5s)
+   downloading... 1,048,576 B — 1,048,576 bytes (authed) (1.0s)
+   downloading...     full-repeat: first done, waiting 60s before second...
+2,097,152 B — 2× full (2,097,152 bytes) (61.4s)
+
+Phase 2: polling every 30s until all counters update (timeout: 30m)
+  Poll #1: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #2: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #3: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #4: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #5: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #6: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #7: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #8: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #9: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #10: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #11: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #12: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #13: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #14: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #15: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #16: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  Poll #17: 0 new ticks — still waiting: full, full-auth, full-repeat, head, 
+partial-10k, partial-10pct, partial-1k, partial-1pct, partial-50pct, 
+partial-99pct, redirect-only, redirect-only-head, zero-abort
+  +  counted! delta=1 after 551s
+  +  counted! delta=1 after 614s
+  +  counted! delta=1 after 616s
+  +  counted! delta=1 after 615s
+  +  counted! delta=1 after 613s
+  +  counted! delta=1 after 619s
+  +  counted! delta=1 after 617s
+  +  counted! delta=1 after 614s
+  +  counted! delta=1 after 617s
+  +  counted! delta=1 after 616s
+  +  counted! delta=1 after 615s
+  +  counted! delta=1 after 618s
+  +  counted! delta=1 after 618s
+  Poll #18: 13 new ticks — still waiting: none
+                             Probe Results (run 1)                              
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃             ┃    Bytes to ┃             ┃          ┃           ┃             ┃
+┃ Mode        ┃         CDN ┃ Notes       ┃ Counted? ┃ Delay (s) ┃ Cost per +1 ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ redirect-o… │           0 │ HTTP 302    │   yes    │      619s │ 0 B (!)     │
+│ redirect-o… │           0 │ HTTP 302    │   yes    │      618s │ 0 B (!)     │
+│ head        │           0 │ HTTP 302    │   yes    │      618s │ 0 B (!)     │
+│ zero-abort  │           0 │ stream      │   yes    │      617s │ 0 B (!)     │
+│             │             │ opened, 0   │          │           │             │
+│             │             │ bytes read  │          │           │             │
+│ partial-1k  │       1,024 │ HTTP 206    │   yes    │      617s │ 1,024 B     │
+│             │             │             │          │           │ (0.098%)    │
+│ partial-10k │      10,240 │ HTTP 206    │   yes    │      616s │ 10,240 B    │
+│             │             │             │          │           │ (0.977%)    │
+│ partial-1p… │      10,485 │ HTTP 206    │   yes    │      616s │ 10,485 B    │
+│             │             │             │          │           │ (1.000%)    │
+│ partial-10… │     104,857 │ HTTP 206    │   yes    │      615s │ 104,857 B   │
+│             │             │             │          │           │ (10.000%)   │
+│ partial-50… │     524,288 │ HTTP 206    │   yes    │      615s │ 524,288 B   │
+│             │             │             │          │           │ (50.000%)   │
+│ partial-99… │   1,038,090 │ HTTP 206    │   yes    │      614s │ 1,038,090 B │
+│             │             │             │          │           │ (99.000%)   │
+│ full        │   1,048,576 │ 1,048,576   │   yes    │      614s │ 1,048,576 B │
+│             │             │ bytes       │          │           │ (100.000%)  │
+│ full-auth   │   1,048,576 │ 1,048,576   │   yes    │      613s │ 1,048,576 B │
+│             │             │ bytes       │          │           │ (100.000%)  │
+│             │             │ (authed)    │          │           │             │
+│ full-repeat │   2,097,152 │ 2× full     │   yes    │      551s │ 2,097,152 B │
+│             │             │ (2,097,152  │          │           │ (200.000%)  │
+│             │             │ bytes)      │          │           │             │
+└─────────────┴─────────────┴─────────────┴──────────┴───────────┴─────────────┘
+
+Cheapest counting mode: redirect-only — 0 B (0 bytes of 1,048,576 B asset)
