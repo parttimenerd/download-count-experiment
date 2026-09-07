@@ -1,5 +1,5 @@
-import os
 import time
+from datetime import datetime
 
 import click
 import requests
@@ -15,26 +15,27 @@ SIZE_1MB = 1 * 1024 * 1024
 
 
 def get_token():
-    result = __import__("subprocess").run(
+    import subprocess
+    result = subprocess.run(
         ["gh", "auth", "token"], capture_output=True, text=True, check=True
     )
     return result.stdout.strip()
 
 
-def snapshot(owner, repo):
-    """Returns {tag: download_count} for the ASSET_1MB asset in each release."""
-    counts = {}
-    for a in get_asset_info(owner, repo):
-        if a["asset_name"] == ASSET_1MB:
-            counts[a["tag"]] = a["download_count"]
-    return counts
+def snapshot_all(owner, repo):
+    """Returns {tag: download_count} for all ASSET_1MB assets."""
+    return {
+        a["tag"]: a["download_count"]
+        for a in get_asset_info(owner, repo)
+        if a["asset_name"] == ASSET_1MB
+    }
 
 
 def github_url(owner, repo, tag):
     return f"https://github.com/{owner}/{repo}/releases/download/{tag}/{ASSET_1MB}"
 
 
-def do_download(mode, owner, repo, tag, size, token):
+def do_download(mode, owner, repo, tag, token):
     """Perform the request for the given mode. Returns (bytes_from_cdn, notes)."""
     url = github_url(owner, repo, tag)
 
@@ -64,22 +65,22 @@ def do_download(mode, owner, repo, tag, size, token):
         return len(r.content), f"HTTP {r.status_code}"
 
     if mode == "partial-1pct":
-        end = max(0, int(size * 0.01) - 1)
+        end = max(0, int(SIZE_1MB * 0.01) - 1)
         r = requests.get(url, headers={"Range": f"bytes=0-{end}"}, timeout=10)
         return len(r.content), f"HTTP {r.status_code}"
 
     if mode == "partial-10pct":
-        end = max(0, int(size * 0.10) - 1)
+        end = max(0, int(SIZE_1MB * 0.10) - 1)
         r = requests.get(url, headers={"Range": f"bytes=0-{end}"}, timeout=30)
         return len(r.content), f"HTTP {r.status_code}"
 
     if mode == "partial-50pct":
-        end = max(0, int(size * 0.50) - 1)
+        end = max(0, int(SIZE_1MB * 0.50) - 1)
         r = requests.get(url, headers={"Range": f"bytes=0-{end}"}, timeout=30)
         return len(r.content), f"HTTP {r.status_code}"
 
     if mode == "partial-99pct":
-        end = max(0, int(size * 0.99) - 1)
+        end = max(0, int(SIZE_1MB * 0.99) - 1)
         r = requests.get(url, headers={"Range": f"bytes=0-{end}"}, timeout=60)
         return len(r.content), f"HTTP {r.status_code}"
 
@@ -92,8 +93,9 @@ def do_download(mode, owner, repo, tag, size, token):
         return total, f"{total:,} bytes (authed)"
 
     if mode == "full-repeat":
-        # Download the same release twice — does counter go +1 or +2?
         total1 = _stream_full(url)
+        console.print(f"    [dim]full-repeat: first done, waiting 60s before second...[/dim]")
+        time.sleep(60)
         total2 = _stream_full(url)
         return total1 + total2, f"2× full ({total1 + total2:,} bytes)"
 
@@ -111,71 +113,116 @@ def _stream_full(url, headers=None):
 
 @click.command()
 @click.option("--repo", default=REPO_NAME, show_default=True)
-@click.option("--wait", default=10, show_default=True,
-              help="Seconds to wait after download before re-checking count")
-@click.option("--run", default=1, type=click.Choice(["1", "2"]), show_default=True,
+@click.option("--poll", default=30, show_default=True,
+              help="Seconds between API polls while waiting for counters")
+@click.option("--run", default="1", type=click.Choice(["1", "2"]), show_default=True,
               help="Which run set to use (1 or 2)")
-@click.option("--modes", default=None,
+@click.option("--timeout-minutes", default=60, show_default=True,
+              help="Give up polling after this many minutes")
+@click.option("--modes", "modes_override", default=None,
               help="Comma-separated subset of modes to run (default: all)")
-def main(repo, wait, run, modes):
+def main(repo, poll, run, timeout_minutes, modes_override):
     owner = get_owner()
     token = get_token()
-    size = SIZE_1MB
 
     mode_list = MODES
-    if modes:
-        mode_list = [m.strip() for m in modes.split(",")]
+    if modes_override:
+        mode_list = [m.strip() for m in modes_override.split(",")]
 
-    all_counts = snapshot(owner, repo)
+    # Verify all releases exist before starting
+    counts = snapshot_all(owner, repo)
+    missing = [m for m in mode_list if f"v-{m}-{run}" not in counts]
+    if missing:
+        console.print(f"[red]Missing releases for: {missing} — did you run setup.py?[/red]")
+        raise SystemExit(1)
 
-    table = Table(title=f"Probe Results (run {run}, wait={wait}s)")
+    # --- Phase 1: download all modes ---
+    console.print(f"\n[bold]Phase 1: downloading all {len(mode_list)} modes (run {run})[/bold]")
+
+    # {mode: (bytes_recv, notes, t_downloaded, before_count)}
+    results = {}
+    for mode in mode_list:
+        tag = f"v-{mode}-{run}"
+        before = counts[tag]
+        console.print(f"  [{mode}] downloading...", end=" ")
+        t_start = time.monotonic()
+        bytes_recv, notes = do_download(mode, owner, repo, tag, token)
+        t_done = time.monotonic()
+        console.print(f"{bytes_recv:,} B — {notes} ({t_done - t_start:.1f}s)")
+        results[mode] = {
+            "bytes": bytes_recv,
+            "notes": notes,
+            "t_downloaded": datetime.now(),
+            "before": before,
+            "after": None,
+            "delta_seconds": None,
+        }
+
+    # --- Phase 2: poll until all counters settle ---
+    console.print(f"\n[bold]Phase 2: polling every {poll}s until all counters update (timeout: {timeout_minutes}m)[/bold]")
+
+    pending = set(mode_list)
+    deadline = time.monotonic() + timeout_minutes * 60
+    poll_num = 0
+
+    while pending and time.monotonic() < deadline:
+        time.sleep(poll)
+        poll_num += 1
+        fresh = snapshot_all(owner, repo)
+        ticked = set()
+        for mode in list(pending):
+            tag = f"v-{mode}-{run}"
+            after = fresh.get(tag, results[mode]["before"])
+            if after > results[mode]["before"]:
+                delta_t = (datetime.now() - results[mode]["t_downloaded"]).total_seconds()
+                results[mode]["after"] = after
+                results[mode]["delta_seconds"] = delta_t
+                ticked.add(mode)
+                console.print(f"  [green]+[/green] [{mode}] counted! delta={after - results[mode]['before']} after {delta_t:.0f}s")
+        pending -= ticked
+        still = ", ".join(sorted(pending)) if pending else "none"
+        console.print(f"  Poll #{poll_num}: {len(ticked)} new ticks — still waiting: {still}")
+
+    if pending:
+        console.print(f"\n[yellow]Timeout: {len(pending)} modes never incremented: {sorted(pending)}[/yellow]")
+        for mode in pending:
+            results[mode]["after"] = results[mode]["before"]
+            results[mode]["delta_seconds"] = None
+
+    # --- Results table ---
+    table = Table(title=f"Probe Results (run {run})")
     table.add_column("Mode", style="magenta")
     table.add_column("Bytes to CDN", justify="right")
     table.add_column("Notes")
-    table.add_column("Before", justify="right")
-    table.add_column("After", justify="right")
-    table.add_column("Delta", justify="right", style="bold")
+    table.add_column("Counted?", justify="center")
+    table.add_column("Delay (s)", justify="right")
     table.add_column("Cost per +1", style="yellow")
 
     cheapest = None
-
     for mode in mode_list:
-        tag = f"v-{mode}-{run}"
-        if tag not in all_counts:
-            console.print(f"[red]Release {tag} not found — did you run setup.py?[/red]")
-            continue
-
-        before = all_counts[tag]
-        bytes_recv, notes = do_download(mode, owner, repo, tag, size, token)
-
-        console.print(f"  [{mode}] waiting {wait}s...", end="\r")
-        time.sleep(wait)
-
-        after = snapshot(owner, repo).get(tag, before)
-        delta = after - before
-
+        r = results[mode]
+        delta = (r["after"] or 0) - r["before"]
+        counted = "[green]yes[/green]" if delta > 0 else "[red]no[/red]"
+        delay = f"{r['delta_seconds']:.0f}s" if r["delta_seconds"] is not None else "—"
         if delta > 0:
-            cost = f"{bytes_recv:,} B ({bytes_recv / size * 100:.3f}%)" if bytes_recv > 0 else "0 B (!))"
+            cost = f"{r['bytes']:,} B ({r['bytes'] / SIZE_1MB * 100:.3f}%)" if r["bytes"] > 0 else "[bold]0 B (!)[/bold]"
             if cheapest is None:
-                cheapest = (mode, bytes_recv, size)
+                cheapest = (mode, r["bytes"])
         else:
             cost = "—"
-
-        delta_str = f"[green]+{delta}[/green]" if delta > 0 else "[dim]0[/dim]"
-        table.add_row(mode, f"{bytes_recv:,}", notes, str(before), str(after), delta_str, cost)
+        table.add_row(mode, f"{r['bytes']:,}", r["notes"], counted, delay, cost)
 
     console.print(table)
 
     if cheapest:
-        mode, b, s = cheapest
-        pct = f"{b / s * 100:.3f}%" if b > 0 else "0 bytes"
+        mode, b = cheapest
+        pct = f"{b / SIZE_1MB * 100:.3f}%" if b > 0 else "0 bytes"
         console.print(
             f"\n[bold green]Cheapest counting mode:[/bold green] {mode} — "
-            f"{b:,} B transferred ({pct} of {s:,} B asset)"
+            f"{b:,} B ({pct} of {SIZE_1MB:,} B asset)"
         )
     else:
-        console.print("\n[yellow]No mode incremented the counter during this run.[/yellow]")
-        console.print("[dim]GitHub uses a ~2h cache. Wait before re-running, or use --run 2.[/dim]")
+        console.print("\n[red]No mode incremented any counter.[/red]")
 
 
 if __name__ == "__main__":
